@@ -17,7 +17,14 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.1.0
-
+    
+    - name: Setup Google Cloud SDK
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      run: |
+        echo $GOOGLE_APPLICATION_CREDENTIALS | base64 -d > /tmp/keyfile.json
+        gcloud auth activate-service-account --key-file=/tmp/keyfile.json
+    
     - name: Terraform Init
       run: terraform init
 
