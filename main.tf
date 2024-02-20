@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = file("GOOGLE_APPLICATION_CREDENTIALS")
+  credentials = file("/tmp/keyfile.json")
   project = "my-lab-production"
   region  = "europe-west9"
   zone    = "europe-west9-a"
