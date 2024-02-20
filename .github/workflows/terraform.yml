@@ -22,7 +22,7 @@ jobs:
       env:
         GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
       run: |
-        echo $GOOGLE_APPLICATION_CREDENTIALS | base64 -d > /tmp/keyfile.json
+        echo $GOOGLE_APPLICATION_CREDENTIALS > /tmp/keyfile.json
         gcloud auth activate-service-account --key-file=/tmp/keyfile.json
     
     - name: Terraform Init
