@@ -7,7 +7,7 @@ provider "google" {
 
 resource "google_container_cluster" "primary" {
   name     = "my-lab-cluster"
-  location = "europe-west9"
+  location = "us-central1"
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
