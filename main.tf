@@ -23,7 +23,9 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 
   node_config {
     preemptible  = true
-    machine_type = "e2-medium"
+    machine_type = "e2-small"
+    disk_size_gb = 10
+    disk_type = "pd-standard"
 
   }
 }
