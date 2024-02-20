@@ -5,7 +5,7 @@ provider "google" {
   zone    = "europe-west9-a"
 }
 
-resource "google_container_cluster" "my_lab_cluster" {
+resource "google_container_cluster" "primary" {
   name     = "my-lab-cluster"
   location = "europe-west9"
 
