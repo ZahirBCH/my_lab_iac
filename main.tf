@@ -5,6 +5,18 @@ provider "google" {
   zone    = "europe-west9-a"
 }
 
+resource "google_compute_network" "my_network" {
+  name = "my-lab-network"
+}
+
+resource "google_compute_subnetwork" "my_subnet" {
+  name          = "my-lab-subnet"
+  region        = "europe-west9" # Remplacez par la région de votre choix
+  network       = google_compute_network.my_network.self_link
+  ip_cidr_range = "10.0.0.0/24" # Remplacez par la plage IP de votre choix
+}
+
+
 resource "google_container_cluster" "primary" {
   name     = "my-lab-cluster"
   location = "europe-west9-a"
@@ -33,8 +45,8 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 resource "google_artifact_registry_repository" "my_artifact_registry" {
   provider = google
 
-  location      = "europe-west9"
-  repository_id = "my-artifact-registry"
+  location      = "europe-west9-a"
+  repository_id = "my-lab-artifact-registry"
   description   = "Ma Artifact Registry pour des images Docker"
   format        = "DOCKER"
 }
