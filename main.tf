@@ -6,26 +6,24 @@ provider "google" {
 }
 
 resource "google_compute_network" "my_network" {
-  name = "default"
+  name = "my-lab-network"
 }
 
 resource "google_compute_subnetwork" "my_subnet" {
   name          = "my-lab-subnet"
-  region        = "europe-west9" # Remplacez par la région de votre choix
+  region        = "europe-west9"
   network       = google_compute_network.my_network.self_link
-  ip_cidr_range = "10.0.0.0/24" # Remplacez par la plage IP de votre choix
+  ip_cidr_range = "10.0.0.0/24"
 }
-
 
 resource "google_container_cluster" "primary" {
   name     = "my-lab-cluster"
   location = "europe-west9-a"
 
-  # We can't create a cluster with no node pool defined, but we want to only use
-  # separately managed node pools. So we create the smallest possible default
-  # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
+
+  network = google_compute_network.my_network.self_link # Utilisation du réseau créé
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
@@ -38,15 +36,20 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     machine_type = "e2-small"
     disk_size_gb = 10
     disk_type = "pd-standard"
+  }
 
+  network_config {
+    subnetwork = google_compute_subnetwork.my_subnet.self_link # Utilisation du sous-réseau créé
   }
 }
 
 resource "google_artifact_registry_repository" "my_artifact_registry" {
-  provider = google
+  provider      = google
 
   location      = "europe-west9"
   repository_id = "my-lab-artifact-registry"
   description   = "Ma Artifact Registry pour des images Docker"
   format        = "DOCKER"
+
+  network       = google_compute_network.my_network.self_link # Utilisation du réseau créé
 }
