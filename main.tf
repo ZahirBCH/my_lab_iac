@@ -6,7 +6,7 @@ provider "google" {
 }
 
 resource "google_compute_network" "my_network" {
-  name = "my-lab-network"
+  name = "default"
 }
 
 resource "google_compute_subnetwork" "my_subnet" {
