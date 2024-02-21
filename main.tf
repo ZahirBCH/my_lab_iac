@@ -29,3 +29,12 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 
   }
 }
+
+resource "google_artifact_registry_repository" "my_artifact_registry" {
+  provider = google
+
+  location      = "europe-west9"
+  repository_id = "my-artifact-registry"
+  description   = "Ma Artifact Registry pour des images Docker"
+  format        = "DOCKER"
+}
