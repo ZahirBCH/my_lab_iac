@@ -1,6 +1,10 @@
+variable "project_id" {
+  type = string
+}
+
 provider "google" {
   credentials = file("/tmp/keyfile.json")
-  project = "my-lab-production"
+  project = var.project_id
   region  = "europe-west9"
   zone    = "europe-west9-a"
 }

@@ -9,6 +9,9 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    env:
+      TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
