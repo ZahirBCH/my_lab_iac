@@ -28,6 +28,16 @@ jobs:
         echo $GOOGLE_APPLICATION_CREDENTIALS | base64 -d > /tmp/keyfile.json
         gcloud auth activate-service-account --key-file=/tmp/keyfile.json
     
+    - name: Manual approval
+      if: github.ref != 'refs/heads/main' && github.event_name != 'pull_request'
+      run: |
+        echo "This workflow is being run on a branch other than main. Do you want to proceed?"
+        read -p "Enter 'yes' to proceed: " confirmation
+        if [ "$confirmation" != "yes" ]; then
+          echo "Workflow cancelled."
+          exit 1
+        fi
+    
     - name: Terraform Init
       run: terraform init
 
