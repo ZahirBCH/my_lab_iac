@@ -53,8 +53,8 @@ data "google_iam_policy" "admin" {
 }
 
 resource "google_artifact_registry_repository_iam_policy" "policy" {
-  project    = google_artifact_registry_repository.my-repo.project
-  location   = google_artifact_registry_repository.my-repo.location
-  repository = google_artifact_registry_repository.my-repo.name
+  project    = google_artifact_registry_repository.my_artifact_registry.project
+  location   = google_artifact_registry_repository.my_artifact_registry.location
+  repository = google_artifact_registry_repository.my_artifact_registry.name
   policy_data = data.google_iam_policy.admin.policy_data
 }
