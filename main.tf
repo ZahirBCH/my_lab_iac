@@ -38,3 +38,23 @@ resource "google_artifact_registry_repository" "my_artifact_registry" {
   description   = "Ma Artifact Registry pour des images Docker"
   format        = "DOCKER"
 }
+
+data "github_actions_secret" "docker_login" {
+  secret_name = "DOCKER_LOGIN"
+}
+
+data "google_iam_policy" "admin" {
+  binding {
+    role = "roles/artifactregistry.admin"
+    members = [
+      "user:${data.github_actions_secret.docker_login.value}",
+    ]
+  }
+}
+
+resource "google_artifact_registry_repository_iam_policy" "policy" {
+  project    = google_artifact_registry_repository.my-repo.project
+  location   = google_artifact_registry_repository.my-repo.location
+  repository = google_artifact_registry_repository.my-repo.name
+  policy_data = data.google_iam_policy.admin.policy_data
+}
