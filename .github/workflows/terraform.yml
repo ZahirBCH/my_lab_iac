@@ -11,6 +11,7 @@ jobs:
 
     env:
       TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+      TF_VAR_docker_login: ${{ secrets.DOCKER_LOGIN }}
 
     steps:
     - name: Checkout code

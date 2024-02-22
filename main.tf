@@ -2,6 +2,10 @@ variable "project_id" {
   type = string
 }
 
+variable "docker_login" {
+  type = string
+}
+
 provider "google" {
   credentials = file("/tmp/keyfile.json")
   project = var.project_id
@@ -39,15 +43,11 @@ resource "google_artifact_registry_repository" "my_artifact_registry" {
   format        = "DOCKER"
 }
 
-data "github_actions_secret" "docker_login" {
-  secret_name = "DOCKER_LOGIN"
-}
-
 data "google_iam_policy" "admin" {
   binding {
     role = "roles/artifactregistry.admin"
     members = [
-      "user:${data.github_actions_secret.docker_login.value}",
+      "user:${var.docker_login}",
     ]
   }
 }
